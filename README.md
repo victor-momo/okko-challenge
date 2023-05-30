@@ -37,6 +37,22 @@ Readme file for the Okko tech. challenge. All business, tech. and implementation
 
 See commit messages for detailed step-by-step explanations on how the challenge will be solved. Here will only be indicated the most holistic decisions.
 
+### Running the solution
+
+Use the following commands to run the problem solution (web interface + api).
+
+#### Running the api
+
+```sh
+cd api && npm install && npm run dev
+```
+
+#### Running the web UI
+
+```sh
+cd web && npm install && npm run dev
+```
+
 ### Tech. Stack
 
 1. For now, I decided to go on the front-end with a web interface based on React + Tailwind for styling, Vite for tooling.
