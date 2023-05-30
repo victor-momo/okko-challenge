@@ -3,10 +3,13 @@ import { dayHours } from "../../resources/dayHours";
 import { Meeting } from "../../types/Meeting";
 import { GridTile } from "./GridTile";
 import { MeetingOverlays } from "./Overlays/MeetingOverlays";
+import { sameDay } from "../../helpers/dateHelper";
 
 export const GridColumn = ({
+  day,
   meetings
 }: {
+  day: Date;
   meetings: Meeting[] | undefined;
 }) => {
   const [columnHeight, setColumnHeight] = useState(0);
@@ -21,7 +24,12 @@ export const GridColumn = ({
   return (
     <div className="space-x-1 relative flex flex-col flex-grow" ref={ref}>
       {Object.keys(dayHours).map((hour) => (
-        <GridTile key={hour} />
+        <GridTile
+          key={hour}
+          disabled={
+            sameDay(new Date(), day) && parseInt(hour) < new Date().getHours()
+          }
+        />
       ))}
       {columnHeight > 0 && meetings && meetings.length > 0 && (
         <MeetingOverlays meetings={meetings} columnHeight={columnHeight} />

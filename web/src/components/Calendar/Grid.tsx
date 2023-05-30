@@ -12,6 +12,7 @@ export const Grid = () => {
       {weekDays.map((day) => {
         return (
           <GridColumn
+            day={day}
             key={day.getUTCDate()}
             meetings={
               meetings && meetings.length > 0
