@@ -53,7 +53,9 @@ cd api && npm install && npm run dev
 cd web && npm install && npm run dev
 ```
 
-### Tech. Stack
+### Tech. Choices
 
 1. For now, I decided to go on the front-end with a web interface based on React + Tailwind for styling, Vite for tooling.
 2. On the back-end, setup of a simple express server to host a REST api.
+3. After a basic calendar setup, I will now try to display zoom events on this calendar. I will save the event
+   creation through a drag & drop interaction for later, as it seems quite complex. The easier route for me seems currently to first try and get a grasp on how to interact with Zoom, and listing and displaying on this calendar all existing events seems like a good first step to me.
