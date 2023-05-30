@@ -32,3 +32,11 @@ Readme file for the Okko tech. challenge. All business, tech. and implementation
 - Evaluation:
   On fera la revue de ton test technique ensemble, sous forme de PR review. Je te questionnerai alors sur tes choix et difficultés, et on creusera potentiellement des éléments techniques.
   Étant donné que le temps imparti est court, la qualité visuelle de la page ne sera pas prise en compte
+
+## Challenge Solution
+
+See commit messages for detailed step-by-step explanations on how the challenge will be solved. Here will only be indicated the most holistic decisions.
+
+### Tech. Stack
+
+- For now, I decided to go on the front-end with a web interface based on React + Tailwind for styling, Vite for tooling.
