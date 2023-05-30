@@ -53,9 +53,12 @@ cd api && npm install && npm run dev
 cd web && npm install && npm run dev
 ```
 
-### Tech. Choices
+## Tech. Choices
 
 1. For now, I decided to go on the front-end with a web interface based on React + Tailwind for styling, Vite for tooling.
 2. On the back-end, setup of a simple express server to host a REST api.
 3. After a basic calendar setup, I will now try to display zoom events on this calendar. I will save the event
    creation through a drag & drop interaction for later, as it seems quite complex. The easier route for me seems currently to first try and get a grasp on how to interact with Zoom, and listing and displaying on this calendar all existing events seems like a good first step to me.
+4. After having started to read the Zoom api documentation, we understand that we will need to setup a new
+   "Zoom Application" within Zoom's ecosystem, in order to interact with the Zoom api. This Zoom application, related to our Zoom account, will then allow us to access the Zoom api using an OAuth flow. I created a new Zoom account dedicated to this project. As its credentials should remain private, I made the decision to store them in an .env file which will not be commited with the project for security reasons. The .env file is then loaded at runtime.
+   Following [this documentation](https://developers.zoom.us/docs/internal-apps/s2s-oauth/#use-account-credentials-to-get-an-access-token), I created a first Zoom Adapter boundary which will be dedicated to managing interactions with the Zoom API. Following dependency injection principles, I will then inject this adapter inside my api router, so that the router remains agnostic from implementation details. I decided not to test the router, as it will contain purely simple CRUD logic, and rather focus on testing the boundary where logic prevails. Ofc we could test everything (on the front-end as well), but w.r. to time this is the choice I prefer.
