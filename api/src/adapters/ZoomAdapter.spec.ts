@@ -103,4 +103,53 @@ describe("Zoom External Boundary Adapter", () => {
       }
     }
   );
+
+  it("Should run a successful POST request, and return a newly created Meeting", async () => {
+    (axios as jest.Mocked<typeof axios>).post.mockResolvedValueOnce({
+      data: {
+        access_token: "mock_access_token"
+      }
+    });
+    (axios as jest.Mocked<typeof axios>).post.mockResolvedValueOnce({
+      data: mockMeeting
+    });
+
+    const adapter = new ZoomAdapter();
+    const newMeeting = await adapter.createMeeting({
+      startDate: new Date().toUTCString(),
+      endDate: new Date().toUTCString(),
+      object: ""
+    });
+    expect(newMeeting).toStrictEqual(mockMeeting);
+  });
+
+  it(
+    "Should throw an error when failing a POST request," +
+      "and if failing the POST request with an unauthorized HTTP response code (401)," +
+      "should reset the api access token flow",
+    async () => {
+      (axios as jest.Mocked<typeof axios>).post.mockResolvedValueOnce({
+        data: {
+          access_token: "mock_access_token"
+        }
+      });
+      (axios as jest.Mocked<typeof axios>).post.mockRejectedValueOnce({
+        response: {
+          status: 401
+        }
+      });
+
+      const adapter = new ZoomAdapter();
+      try {
+        await adapter.createMeeting({
+          startDate: new Date().toUTCString(),
+          endDate: new Date().toUTCString(),
+          object: ""
+        });
+      } catch (e) {
+        expect((e as any).response.status).toStrictEqual(401);
+        expect(adapter.hasApiAccess).toBeFalsy();
+      }
+    }
+  );
 });
