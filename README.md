@@ -39,4 +39,5 @@ See commit messages for detailed step-by-step explanations on how the challenge 
 
 ### Tech. Stack
 
-- For now, I decided to go on the front-end with a web interface based on React + Tailwind for styling, Vite for tooling.
+1. For now, I decided to go on the front-end with a web interface based on React + Tailwind for styling, Vite for tooling.
+2. On the back-end, setup of a simple express server to host a REST api.
