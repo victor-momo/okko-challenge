@@ -6,6 +6,7 @@ import { MeetingOverlays } from "./Overlays/MeetingOverlays";
 import { dayAndHourToTimestamp, sameDay } from "../../helpers/dateHelper";
 import { CreateMeetingOverlay } from "./Overlays/CreateMeetingOverlay";
 import { SetMeetingModal } from "../Modals/SetMeetingModal";
+import { useCreateMeeting } from "./useCreateMeeting";
 
 export const GridColumn = ({
   day,
@@ -17,33 +18,42 @@ export const GridColumn = ({
   const [columnHeight, setColumnHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
-  const [creatingMeeting, setCreatingMeeting] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [meetingStartHour, setMeetingStartHour] = useState(-1);
-  const [meetingEndHour, setMeetingEndHour] = useState(-1);
-  const [meetingStartYPosition, setMeetingStartYPosition] = useState(0);
+  const {
+    setItemHeight,
+    onMouseMove,
+    showModal,
+    meetingEndHour,
+    setCreatingMeeting,
+    meetingStartHour,
+    creatingMeeting,
+    itemHeight,
+    setMeetingStartHour,
+    setShowModal,
+    setMeetingEndHour,
+    meetingStartYPosition,
+    onMouseDown
+  } = useCreateMeeting(columnHeight);
 
   useEffect(() => {
     if (ref.current) {
       setColumnHeight(ref.current.clientHeight);
+      setItemHeight(columnHeight / 24);
     }
-  }, [columnHeight]);
+  }, [columnHeight, setItemHeight]);
 
   return (
-    <div className="space-x-1 relative flex flex-col flex-grow" ref={ref}>
+    <div
+      onMouseMove={onMouseMove}
+      className="space-x-1 relative flex flex-col flex-grow"
+      ref={ref}
+    >
       {Object.keys(dayHours).map((hour) => (
         <GridTile
           key={hour}
           disabled={
             sameDay(new Date(), day) && parseInt(hour) < new Date().getHours()
           }
-          onMouseDown={(e) => {
-            if (!showModal) {
-              setCreatingMeeting(true);
-              const y = e.clientY;
-              setMeetingStartYPosition(y);
-            }
-          }}
+          onMouseDown={onMouseDown}
         />
       ))}
       {columnHeight > 0 && meetings && meetings.length > 0 && (
@@ -51,8 +61,8 @@ export const GridColumn = ({
       )}
       {columnHeight > 0 && creatingMeeting && (
         <CreateMeetingOverlay
+          itemHeight={itemHeight}
           setMeetingStartHour={setMeetingStartHour}
-          setMeetingEndHour={setMeetingEndHour}
           columnHeight={columnHeight}
           day={day}
           startYPosition={meetingStartYPosition}
@@ -65,6 +75,7 @@ export const GridColumn = ({
             setShowModal(false);
             setMeetingStartHour(-1);
             setMeetingEndHour(-1);
+            setItemHeight(columnHeight / 24);
           }}
           startTile={dayAndHourToTimestamp(day, meetingStartHour)}
           endTile={

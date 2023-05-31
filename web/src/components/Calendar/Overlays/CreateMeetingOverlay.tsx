@@ -1,18 +1,16 @@
-import { useState } from "react";
-
 export const CreateMeetingOverlay = ({
   columnHeight,
   startYPosition,
   setShowModal,
   setMeetingStartHour,
-  setMeetingEndHour
+  itemHeight
 }: {
   columnHeight: number;
+  itemHeight: number;
   startYPosition: number;
   day: Date;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setMeetingStartHour: React.Dispatch<React.SetStateAction<number>>;
-  setMeetingEndHour: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const tileHeight = columnHeight / 24;
   const offsetTop =
@@ -21,15 +19,8 @@ export const CreateMeetingOverlay = ({
   const startHour = Math.floor(offsetTop / tileHeight);
   setMeetingStartHour(startHour);
 
-  const [itemHeight, setItemHeight] = useState(tileHeight);
-
   return (
     <div
-      onMouseMove={(e) => {
-        const yPosition = e.clientY;
-        setItemHeight(tileHeight + yPosition - startYPosition);
-        setMeetingEndHour(Math.ceil((offsetTop + itemHeight) / tileHeight));
-      }}
       onMouseUp={() => {
         setShowModal(true);
       }}
