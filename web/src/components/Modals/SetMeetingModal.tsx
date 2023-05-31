@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { createMeeting } from "../../helpers/apiCalls";
+import { dayAndHourToTimestamp } from "../../helpers/dateHelper";
 
 export const SetMeetingModal = ({
-  closeModalAndResetHours,
-  startTile,
-  endTile,
+  closeModalAndResetState,
+  day,
+  meetingStartHour,
+  meetingEndHour,
   setCreatingMeeting
 }: {
-  closeModalAndResetHours: () => void;
-  startTile: number;
-  endTile: number;
+  closeModalAndResetState: () => void;
+  day: Date;
+  meetingStartHour: number;
+  meetingEndHour: number;
   setCreatingMeeting: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const startTile = dayAndHourToTimestamp(day, meetingStartHour);
+  const endTile =
+    meetingEndHour != -1
+      ? dayAndHourToTimestamp(day, meetingEndHour)
+      : dayAndHourToTimestamp(day, meetingStartHour + 1);
+
   useEffect(() => {
     setCreatingMeeting(false);
   });
@@ -43,7 +52,7 @@ export const SetMeetingModal = ({
               <h3 className="text-3xl font-semibold">My New Meeting</h3>
               <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                onClick={closeModalAndResetHours}
+                onClick={closeModalAndResetState}
               >
                 <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"></span>
               </button>
@@ -80,7 +89,7 @@ export const SetMeetingModal = ({
               <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={closeModalAndResetHours}
+                onClick={closeModalAndResetState}
               >
                 Close
               </button>
@@ -94,7 +103,7 @@ export const SetMeetingModal = ({
                     endDate: new Date(endTile).toUTCString()
                   });
 
-                  closeModalAndResetHours();
+                  closeModalAndResetState();
                 }}
               >
                 Create Meeting

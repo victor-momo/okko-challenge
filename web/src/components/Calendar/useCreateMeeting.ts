@@ -33,6 +33,13 @@ export const useCreateMeeting = (columnHeight: number) => {
     }
   };
 
+  const closeModalAndResetState = () => {
+    setShowModal(false);
+    setMeetingStartHour(-1);
+    setMeetingEndHour(-1);
+    setItemHeight(columnHeight / 24);
+  };
+
   return {
     setItemHeight,
     creatingMeeting,
@@ -40,12 +47,12 @@ export const useCreateMeeting = (columnHeight: number) => {
     meetingStartHour,
     setCreatingMeeting,
     setShowModal,
-    setMeetingEndHour,
     setMeetingStartHour,
     onMouseMove,
     showModal,
     itemHeight,
     onMouseDown,
+    closeModalAndResetState,
     meetingStartYPosition
   };
 };
